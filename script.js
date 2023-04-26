@@ -20,7 +20,7 @@ if (navigator.geolocation) {
       console.log(longitude, latitude);
       console.log(`https://www.google.com/maps/@${latitude},${longitude}`);
 
-      const coords=[latitude,longitude];
+      const coords = [latitude, longitude];
 
       const map = L.map('map').setView(coords, 13);
       // console.log(map);
@@ -34,6 +34,26 @@ if (navigator.geolocation) {
         .addTo(map)
         .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
         .openPopup();
+
+      map.on('click', function (mapEvent) {
+        console.log(mapEvent.latlng);
+        const { lat, lng } = mapEvent.latlng;
+        console.log(lat, lng);
+
+        L.marker([lat, lng])
+          .addTo(map)
+          .bindPopup(
+            L.popup({
+              maxWidth: 280,
+              minWidth: 100,
+              autoClose: false,
+              closeOnClick: false,
+              className: 'running-popup',
+            })
+          )
+          .setPopupContent('Workout')
+          .openPopup();
+      });
     },
     function () {
       alert(`Location could not be found.`);
